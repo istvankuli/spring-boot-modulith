@@ -44,4 +44,9 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: coverage-report
-        path: target/site/jacoco/jacoco.xm
+        path: target/site/jacoco/jacoco.xml
+
+    - name: Generate Coverage Badge
+      uses: cicirello/jacoco-badge-generator@v2
+      with:
+        jacoco-csv-file: target/site/jacoco/jacoco.csv
