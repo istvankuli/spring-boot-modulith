@@ -23,6 +23,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "Assignments")
 public class Assignment {
+	
+	public Assignment(@NotNull String taskId, @NotNull String employeeId) {
+		this.taskId = taskId;
+		this.employeeId = employeeId;
+	}
+
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.UUID)
