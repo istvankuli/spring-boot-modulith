@@ -16,6 +16,7 @@ import com.istvn.todo.assignment.SaveAssignmentDTO;
 import com.istvn.todo.gateway.response.Response;
 import com.istvn.todo.gateway.response.ResponseBuilder;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -25,28 +26,28 @@ public class AssignmentController {
 	private final AssignmentService assignmentService;
 	
 	@PostMapping("/assignments")
-	public Response<List<String>> createEmployee(@RequestBody SaveAssignmentDTO saveAssignmentDTO) {
+	public Response<List<String>> createAssignment(@RequestBody @Valid SaveAssignmentDTO saveAssignmentDTO) {
 		return new ResponseBuilder<List<String>>()
 				.addData(assignmentService.createAssignments(saveAssignmentDTO))
 				.build();
 	}
 	
 	@DeleteMapping("/assignments/{id}")
-	public Response<List<String>> deleteEmployee(@PathVariable List<String> ids){
-		return new ResponseBuilder<List<String>>()
-				.addData(assignmentService.deleteAssignments(ids))
+	public Response<String> deleteAssignment(@PathVariable String id){
+		return new ResponseBuilder<String>()
+				.addData(assignmentService.deleteAssignment(id))
 				.build();
 	}
 	
 	@GetMapping("/assignments/{id}")
-	public Response<AssignmentDTO> getEmployee(@PathVariable String id){
+	public Response<AssignmentDTO> getAssignment(@PathVariable String id){
 		return new ResponseBuilder<AssignmentDTO>()
 				.addData(assignmentService.getAssignment(id))
 				.build();
 	}
 	
 	@GetMapping("/assignments")
-	public Response<List<AssignmentDTO>> listEmployees(){
+	public Response<List<AssignmentDTO>> listAssignments(){
 		return new ResponseBuilder<List<AssignmentDTO>>()
 				.addData(assignmentService.listAssignments())
 				.build();

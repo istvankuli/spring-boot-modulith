@@ -71,7 +71,8 @@ class AssignmentServiceImplTest {
         employeeDTO2.setId("emp2");
         
         assignment = new Assignment("task1", "emp1");
-        assignmentDTO = new AssignmentDTO("assignment1", null, null, null, null);
+        assignmentDTO = new AssignmentDTO();
+        assignmentDTO.setId("assignment1");
     }
 
     @Test

@@ -61,7 +61,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 		// check if employees exist
 		for (String employeeId : employeeIds) {
 			// if no throw error
-			if (employeeId.length() < 1|| !checkEmployeeExists(employeeId)) {
+			if (employeeId.length() < 1 || !checkEmployeeExists(employeeId)) {
 				throw new AssignmentNotValidException("Employee does not exist!");
 			}
 			// if yes, create assignment, save to the repository and add the id to the
@@ -208,19 +208,40 @@ public class AssignmentServiceImpl implements AssignmentService {
 	@ApplicationModuleListener
 	void on(TaskDeletedEvent event) {
 		List<Assignment> assignments = assignmentMapper.toAssignmentEnityList(listAssignmentsByTaskId(event.taskId()));
-		
+
 		for (Assignment assignment : assignments) {
 			assignmentRepository.deleteById(assignment.getId());
 		}
 	}
-	
+
 	@ApplicationModuleListener
 	void on(EmployeeDeletedEvent event) {
-		List<Assignment> assignments = assignmentMapper.toAssignmentEnityList(listAssignmentsByEmployeeId(event.employeeId()));
-		
+		List<Assignment> assignments = assignmentMapper
+				.toAssignmentEnityList(listAssignmentsByEmployeeId(event.employeeId()));
+
 		for (Assignment assignment : assignments) {
 			assignmentRepository.deleteById(assignment.getId());
 		}
+	}
+
+	/**
+	 * Deletes an assignment by its ID if it exists in the repository. If no
+	 * assignment is found with the given ID, an AssignmentNotFoundException is
+	 * thrown.
+	 * 
+	 * @param List of IDs of the assignments to be deleted.
+	 * @return A list of IDs of deleted assignments.
+	 * @throws AssignmentNotFoundException if no assignment with the given ID is
+	 *                                     found.
+	 */
+	@Override
+	public String deleteAssignment(String id) {
+		Assignment assignment = assignmentRepository.findById(id)
+				.orElseThrow(() -> new AssignmentNotFoundException(id));
+
+		assignmentRepository.deleteById(assignment.getId());
+
+		return assignment.getId();
 	}
 
 }

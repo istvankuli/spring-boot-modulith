@@ -15,6 +15,7 @@ import com.istvn.todo.gateway.response.ResponseBuilder;
 import com.istvn.todo.task.TaskDTO;
 import com.istvn.todo.task.TaskService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -24,7 +25,7 @@ public class TaskController {
 	private final TaskService taskService;
 	
 	@PostMapping("/tasks")
-	public Response<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) {
+	public Response<TaskDTO> createTask(@RequestBody @Valid TaskDTO taskDTO) {
 		return new ResponseBuilder<TaskDTO>()
 				.addData(taskService.createTask(taskDTO))
 				.build();

@@ -1,8 +1,8 @@
 package com.istvn.todo.assignment;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class AssignmentDTO {
 	private String id;
 	private String createdAt;

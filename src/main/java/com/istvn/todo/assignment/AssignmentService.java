@@ -15,4 +15,6 @@ public interface AssignmentService {
 
 
 	List<String> deleteAssignments(List<String> ids);
+
+	String deleteAssignment(String id);
 }
