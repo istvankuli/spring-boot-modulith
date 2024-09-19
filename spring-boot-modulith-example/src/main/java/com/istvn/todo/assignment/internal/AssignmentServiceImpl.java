@@ -2,6 +2,8 @@ package com.istvn.todo.assignment.internal;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.modulith.events.ApplicationModuleListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,8 +13,10 @@ import com.istvn.todo.assignment.SaveAssignmentDTO;
 import com.istvn.todo.assignment.internal.exception.AssignmentNotFoundException;
 import com.istvn.todo.assignment.internal.exception.AssignmentNotValidException;
 import com.istvn.todo.employee.EmployeeDTO;
+import com.istvn.todo.employee.EmployeeDeletedEvent;
 import com.istvn.todo.employee.EmployeeService;
 import com.istvn.todo.task.TaskDTO;
+import com.istvn.todo.task.TaskDeletedEvent;
 import com.istvn.todo.task.TaskService;
 import lombok.AllArgsConstructor;
 
@@ -163,4 +167,59 @@ public class AssignmentServiceImpl implements AssignmentService {
 		}
 		return false;
 	}
+
+	/**
+	 * Retrieves a list of assignments by the given task ID. This method queries the
+	 * repository for all assignments associated with the specified task ID, and
+	 * maps the resulting {@link Assignment} entities to a list of
+	 * {@link AssignmentDTO} objects.
+	 *
+	 * @param taskId the unique identifier of the task whose assignments are to be
+	 *               retrieved.
+	 * @return a list of {@link AssignmentDTO} objects corresponding to the
+	 *         assignments of the specified task.
+	 */
+	@Override
+	public List<AssignmentDTO> listAssignmentsByTaskId(String taskId) {
+		List<Assignment> assignments = assignmentRepository.findByTaskId(taskId);
+
+		return assignmentMapper.toAssignmentDTOList(assignments);
+	}
+
+	/**
+	 * Retrieves a list of assignments by the given employee ID. This method queries
+	 * the repository for all assignments associated with the specified employee ID,
+	 * and maps the resulting {@link Assignment} entities to a list of
+	 * {@link AssignmentDTO} objects.
+	 *
+	 * @param employeeId the unique identifier of the employee whose assignments are
+	 *                   to be retrieved.
+	 * @return a list of {@link AssignmentDTO} objects corresponding to the
+	 *         assignments of the specified employee.
+	 */
+	@Override
+	public List<AssignmentDTO> listAssignmentsByEmployeeId(String employeeId) {
+		List<Assignment> assignments = assignmentRepository.findByEmployeeId(employeeId);
+
+		return assignmentMapper.toAssignmentDTOList(assignments);
+	}
+
+	@ApplicationModuleListener
+	void on(TaskDeletedEvent event) {
+		List<Assignment> assignments = assignmentMapper.toAssignmentEnityList(listAssignmentsByTaskId(event.taskId()));
+		
+		for (Assignment assignment : assignments) {
+			assignmentRepository.deleteById(assignment.getId());
+		}
+	}
+	
+	@ApplicationModuleListener
+	void on(EmployeeDeletedEvent event) {
+		List<Assignment> assignments = assignmentMapper.toAssignmentEnityList(listAssignmentsByEmployeeId(event.employeeId()));
+		
+		for (Assignment assignment : assignments) {
+			assignmentRepository.deleteById(assignment.getId());
+		}
+	}
+
 }

@@ -2,9 +2,12 @@ package com.istvn.todo.employee.internal;
 
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.istvn.todo.employee.EmployeeDTO;
+import com.istvn.todo.employee.EmployeeDeletedEvent;
 import com.istvn.todo.employee.EmployeeService;
 import com.istvn.todo.employee.internal.exception.EmployeeNotFoundException;
 
@@ -16,6 +19,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private final EmployeeRepository employeeRepository;
 
 	private final EmployeeMapper employeeMapper;
+	
+    private final ApplicationEventPublisher events;
+
 
 	/**
 	 * Creates a new employee entity from the provided {@link EmployeeDTO} object.
@@ -36,20 +42,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	/**
-	 * Deletes an employee by their ID. This method looks for the employee in the
-	 * repository by the provided ID. If the employee is found, it is deleted. If
-	 * the employee is not found, an {@link EmployeeNotFoundException} is thrown.
+	 * Deletes an employee by their ID and publishes an {@link EmployeeDeletedEvent}.
+	 * This method first attempts to find the employee in the repository by the provided ID.
+	 * If found, the employee is deleted, and an {@link EmployeeDeletedEvent} is published 
+	 * to notify other parts of the system about the deletion. If the employee is not found, 
+	 * an {@link EmployeeNotFoundException} is thrown.
+	 * <p>
+	 * The method is annotated with {@link Transactional}, ensuring that the deletion and 
+	 * event publication occur within a single transaction.
 	 *
 	 * @param id the unique identifier of the employee to be deleted.
 	 * @return the ID of the employee that was deleted.
 	 * @throws EmployeeNotFoundException if no employee with the given ID is found.
 	 */
 	@Override
+	@Transactional
 	public String deleteEmployee(String id) {
 		employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
 
 		employeeRepository.deleteById(id);
 
+		//publish event
+		events.publishEvent(new EmployeeDeletedEvent(id));
+		
 		return id;
 	}
 

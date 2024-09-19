@@ -8,6 +8,11 @@ public interface AssignmentService {
 	AssignmentDTO getAssignment(String id);
 
 	List<AssignmentDTO> listAssignments();
+	
+	List<AssignmentDTO> listAssignmentsByTaskId(String taskId);
+
+	List<AssignmentDTO> listAssignmentsByEmployeeId(String employeeId);
+
 
 	List<String> deleteAssignments(List<String> ids);
 }

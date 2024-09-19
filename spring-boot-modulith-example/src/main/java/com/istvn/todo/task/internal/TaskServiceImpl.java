@@ -3,9 +3,12 @@ package com.istvn.todo.task.internal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.istvn.todo.task.TaskDTO;
+import com.istvn.todo.task.TaskDeletedEvent;
 import com.istvn.todo.task.TaskService;
 import com.istvn.todo.task.internal.exception.TaskNotFoundException;
 
@@ -17,6 +20,9 @@ public class TaskServiceImpl implements TaskService {
 	private final TaskRepository taskRepository;
 
 	private final TaskMapper taskMapper;
+	
+    private final ApplicationEventPublisher events;
+
 
 	/**
 	 * Creates a new task by saving the provided TaskDTO to the repository. Converts
@@ -35,14 +41,21 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	/**
-	 * Deletes a task by its ID if it exists in the repository. If the task with the
-	 * given ID is not found, a TaskNotFoundException is thrown.
-	 * 
-	 * @param id The ID of the task to be deleted.
-	 * @return The ID of the deleted task.
-	 * @throws TaskNotFoundException if no task with the given ID exists.
+	 * Deletes a task by its ID and publishes a {@link TaskDeletedEvent}.
+	 * This method attempts to find the task in the repository using the provided ID.
+	 * If the task is not found, a {@link TaskNotFoundException} is thrown. 
+	 * If the task is found, it is deleted from the repository, and a {@link TaskDeletedEvent} 
+	 * is published to notify other components of the deletion.
+	 * <p>
+	 * The method is annotated with {@link Transactional}, ensuring that the deletion 
+	 * and event publication are executed within the same transaction.
+	 *
+	 * @param id the unique identifier of the task to be deleted.
+	 * @return the ID of the task that was deleted.
+	 * @throws TaskNotFoundException if no task with the given ID is found.
 	 */
 	@Override
+	@Transactional
 	public String deleteTask(String id) {
 		Optional<Task> taskToDelete = taskRepository.findById(id);
 
@@ -51,6 +64,8 @@ public class TaskServiceImpl implements TaskService {
 		}
 
 		taskRepository.deleteById(id);
+		
+		events.publishEvent(new TaskDeletedEvent(id));
 
 		return id;
 	}
