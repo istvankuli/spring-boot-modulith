@@ -13,7 +13,6 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.istvn.todo.assignment.exception.AssignmentNotFoundException;
 import com.istvn.todo.employee.exception.EmployeeNotFoundException;
-import com.istvn.todo.gateway.response.Response;
 import com.istvn.todo.gateway.response.ResponseBuilder;
 import com.istvn.todo.gateway.response.ResponseError;
 import com.istvn.todo.task.exception.TaskNotFoundException;

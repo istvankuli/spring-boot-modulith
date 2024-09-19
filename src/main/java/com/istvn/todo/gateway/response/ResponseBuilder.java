@@ -23,8 +23,6 @@ public class ResponseBuilder<T> {
 
 	public ResponseBuilder<T> error(ResponseError error) {
 		responseVO.setError(error);
-		responseVO.setResult("Failed");
-		responseVO.setStatus("500");
 		return this;
 	}
 

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.istvn.todo.employee.EmployeeDTO;
 import com.istvn.todo.employee.EmployeeService;
 import com.istvn.todo.gateway.response.Response;
-import com.istvn.todo.gateway.response.ResponseBuilder;import ch.qos.logback.core.model.conditional.ElseModel;
+import com.istvn.todo.gateway.response.ResponseBuilder;
+
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -23,7 +25,7 @@ public class EmployeeController {
 	private final EmployeeService employeeService;
 
 	@PostMapping("/employees")
-	public Response<EmployeeDTO> createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+	public Response<EmployeeDTO> createEmployee(@RequestBody @Valid EmployeeDTO employeeDTO) {
 		return new ResponseBuilder<EmployeeDTO>()
 				.addData(employeeService.createEmployee(employeeDTO))
 				.build();

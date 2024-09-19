@@ -2,10 +2,8 @@ package com.istvn.todo.employee;
 
 import java.time.LocalDate;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.Value;
 
 @Data
 public class EmployeeDTO {
@@ -15,6 +13,10 @@ public class EmployeeDTO {
 	private String id;
 	private String createdAt;
 	private String updatedAt;
+	
+	@NotNull
 	private String name;
+	
+	@NotNull
 	private LocalDate birthDate;
 }
