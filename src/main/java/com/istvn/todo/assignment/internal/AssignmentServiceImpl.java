@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.istvn.todo.assignment.AssignmentDTO;
 import com.istvn.todo.assignment.AssignmentService;
 import com.istvn.todo.assignment.SaveAssignmentDTO;
-import com.istvn.todo.assignment.internal.exception.AssignmentNotFoundException;
-import com.istvn.todo.assignment.internal.exception.AssignmentNotValidException;
+import com.istvn.todo.assignment.exception.AssignmentNotFoundException;
+import com.istvn.todo.assignment.exception.AssignmentNotValidException;
 import com.istvn.todo.employee.EmployeeDTO;
 import com.istvn.todo.employee.EmployeeDeletedEvent;
 import com.istvn.todo.employee.EmployeeService;
@@ -60,7 +60,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 		// check if employees exist
 		for (String employeeId : employeeIds) {
 			// if no throw error
-			if (checkEmployeeExists(employeeId)) {
+			if (!checkEmployeeExists(employeeId)) {
 				throw new AssignmentNotValidException("Employee does not exist!");
 			}
 			// if yes, create assignment, save to the repository and add the id to the

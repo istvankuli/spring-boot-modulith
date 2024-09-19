@@ -1,4 +1,4 @@
-package com.istvn.todo.task.internal.exception;
+package com.istvn.todo.task.exception;
 
 import java.util.NoSuchElementException;
 

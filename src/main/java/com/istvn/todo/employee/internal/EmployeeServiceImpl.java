@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.istvn.todo.employee.EmployeeDTO;
 import com.istvn.todo.employee.EmployeeDeletedEvent;
 import com.istvn.todo.employee.EmployeeService;
-import com.istvn.todo.employee.internal.exception.EmployeeNotFoundException;
+import com.istvn.todo.employee.exception.EmployeeNotFoundException;
 
 import lombok.AllArgsConstructor;
 
@@ -37,8 +37,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
 		Employee employeeToCreate = employeeMapper.toEmployeeEnity(employeeDTO);
+		
 
-		return employeeMapper.toEmployeeDTO(employeeToCreate);
+		return employeeMapper.toEmployeeDTO(employeeRepository.save(employeeToCreate));
 	}
 
 	/**

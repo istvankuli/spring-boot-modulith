@@ -1,4 +1,4 @@
-package com.istvn.todo.employee.internal.exception;
+package com.istvn.todo.employee.exception;
 
 import java.util.NoSuchElementException;
 

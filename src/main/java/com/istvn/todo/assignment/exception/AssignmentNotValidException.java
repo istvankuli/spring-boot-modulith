@@ -1,4 +1,4 @@
-package com.istvn.todo.assignment.internal.exception;
+package com.istvn.todo.assignment.exception;
 
 public class AssignmentNotValidException extends RuntimeException {
 

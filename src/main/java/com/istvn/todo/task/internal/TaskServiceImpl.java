@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.istvn.todo.task.TaskDTO;
 import com.istvn.todo.task.TaskDeletedEvent;
 import com.istvn.todo.task.TaskService;
-import com.istvn.todo.task.internal.exception.TaskNotFoundException;
+import com.istvn.todo.task.exception.TaskNotFoundException;
 
 import lombok.AllArgsConstructor;
 
