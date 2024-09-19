@@ -2,10 +2,11 @@ package com.istvn.todo.assignment;
 
 import java.util.List;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class SaveAssignmentDTO {
+
 	private List<String> employeeIds;
 	private String taskId;
 }

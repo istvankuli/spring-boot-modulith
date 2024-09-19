@@ -2,9 +2,9 @@ package com.istvn.todo.task;
 
 import java.time.LocalDate;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class TaskDTO {
 	private String id;
 	private String createdAt;
