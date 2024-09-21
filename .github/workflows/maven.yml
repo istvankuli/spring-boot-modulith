@@ -59,7 +59,7 @@ jobs:
 
       # Build Docker images using Docker Compose
       - name: Build and run Docker Compose
-        run: docker-compose -f docker-compose.yml up --build -d
+        run: docker compose -f docker-compose.yml up --build -d
 
       # Wait for the PostgreSQL service to be healthy
       - name: Wait for PostgreSQL to be healthy
