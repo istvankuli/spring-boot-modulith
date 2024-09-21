@@ -52,7 +52,7 @@ jobs:
 
       # Build the project with Maven
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: mvn clean package
 
       # Set up Docker Buildx for Docker Compose
       - name: Set up Docker Buildx
@@ -61,10 +61,6 @@ jobs:
       # Build Docker images using Docker Compose
       - name: Build and run Docker Compose
         run: docker compose -f docker-compose.yaml up --build -d
-
-      # Run tests
-      - name: Run Maven tests
-        run: mvn test
 
       # Shut down the services after tests
       - name: Shut down Docker Compose
