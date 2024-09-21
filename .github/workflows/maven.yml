@@ -61,15 +61,7 @@ jobs:
       - name: Build and run Docker Compose
         run: docker compose -f docker-compose.yaml up --build -d
 
-      # Wait for the PostgreSQL service to be healthy
-      - name: Wait for PostgreSQL to be healthy
-        run: |
-          until docker-compose exec -T postgres pg_isready -U myuser; do
-            echo "Waiting for postgres to be healthy..."
-            sleep 10
-          done
-
-      # Run tests (integration tests)
+      # Run tests
       - name: Run Maven tests
         run: mvn test
 
