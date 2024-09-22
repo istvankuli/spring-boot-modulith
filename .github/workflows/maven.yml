@@ -28,7 +28,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up JDK 17 for Maven build
+      # Set up JDK 22 for Maven test
       - name: Set up JDK 22
         uses: actions/setup-java@v3
         with:
@@ -67,7 +67,26 @@ jobs:
             - 5432:5432
             - 8080:8080
     steps:
-    
+          # Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up JDK 22 for Maven build
+      - name: Set up JDK 22
+        uses: actions/setup-java@v3
+        with:
+          java-version: '22'
+          distribution: 'adopt'
+
+      # Cache Maven dependencies
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+            
       # Set up Docker Buildx for Docker Compose
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
