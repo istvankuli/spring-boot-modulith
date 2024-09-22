@@ -101,6 +101,6 @@ jobs:
 
       # Shut down the services after tests
       - name: Shut down Docker Compose
-        run: docker-compose down
+        run: docker compose down
 
       
