@@ -4,18 +4,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.modulith.docs.Documenter;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class SpringBootModulithExampleApplicationTests {
 	
-
-	  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-	    "postgres:16-alpine"
-	  );
-
 	@Test
-	void contextLoads() {
+	void contextLoads(){	
 	}
 	
 	@Test
