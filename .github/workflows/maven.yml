@@ -74,7 +74,7 @@ jobs:
         
       # Build Docker images using Docker Compose
       - name: Build and run Docker Compose
-        run: docker compose -f docker-compose.yaml up --build -d
+        run: docker compose -f ./docker-compose.yaml up --build -d
 
       # Shut down the services after tests
       - name: Shut down Docker Compose
