@@ -22,6 +22,7 @@ public class ResponsePageable<T> {
 	@JsonProperty("record_to")
 	private int recordTo;
 
+	/*
 	public ResponsePageable(List<T> items, int pageSize, int pageNumber) {
 		this.items = items;
 		this.pageNumber = pageNumber;
@@ -31,6 +32,6 @@ public class ResponsePageable<T> {
 			this.pageSize = pageSize;
 		}
 			
-	}
+	}*/
 
 }

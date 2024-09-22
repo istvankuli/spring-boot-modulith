@@ -130,5 +130,12 @@ public class AssignmentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").isEmpty());
     }
+    
+    @Test
+    void listAssignments_methodNotAllowed() throws Exception {
+        mockMvc.perform(delete("/api/v1/assignments"))
+        .andExpect(status().isMethodNotAllowed())
+        .andExpect(jsonPath("$.data").isEmpty());
+    }
 }
 

@@ -55,14 +55,14 @@ public class AssignmentServiceImpl implements AssignmentService {
 
 		// check if task exists with the id
 		if (taskId.length() < 1 || !checkTaskExists(taskId)) {
-			throw new AssignmentNotValidException("The task does not exist!");
+			throw new AssignmentNotValidException();
 		}
 
 		// check if employees exist
 		for (String employeeId : employeeIds) {
 			// if no throw error
 			if (employeeId.length() < 1 || !checkEmployeeExists(employeeId)) {
-				throw new AssignmentNotValidException("Employee does not exist!");
+				throw new AssignmentNotValidException();
 			}
 			// if yes, create assignment, save to the repository and add the id to the
 			// result list

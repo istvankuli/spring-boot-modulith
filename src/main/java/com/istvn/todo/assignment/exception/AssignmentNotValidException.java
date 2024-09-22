@@ -10,12 +10,5 @@ public class AssignmentNotValidException extends RuntimeException {
 	public AssignmentNotValidException() {
         super("Error while creating assignment!");
     }
-	
-	public AssignmentNotValidException(String message) {
-        super(message);
-    }
 
-    public AssignmentNotValidException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

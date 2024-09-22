@@ -13,7 +13,4 @@ public class TaskNotFoundException extends NoSuchElementException{
         super("Task not found with id: "+id);
     }
 
-    public TaskNotFoundException(String id, Throwable cause) {
-        super("Task not found with id: "+id, cause);
-    }
 }

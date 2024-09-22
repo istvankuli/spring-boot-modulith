@@ -12,7 +12,4 @@ public class AssignmentNotFoundException extends NoSuchElementException {
         super("Assignment not found with id: "+id);
     }
 
-    public AssignmentNotFoundException(String id, Throwable cause) {
-        super("Assignment not found with id: "+id, cause);
-    }
 }

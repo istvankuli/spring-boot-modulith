@@ -13,7 +13,4 @@ public class EmployeeNotFoundException extends NoSuchElementException{
         super("Employee not found with id: "+id);
     }
 
-    public EmployeeNotFoundException(String id, Throwable cause) {
-        super("Employee not found with id: "+id, cause);
-    }
 }

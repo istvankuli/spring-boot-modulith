@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,7 +30,7 @@ public class GlobalExceptionHandler {
 
 	}
 	
-	@ExceptionHandler(value = { MethodNotAllowedException.class })
+	@ExceptionHandler(value = { MethodNotAllowedException.class, HttpRequestMethodNotSupportedException.class })
 	public ResponseEntity<Object> handleMethodNotAllowedException(Exception e) {
 		return new ResponseEntity<>(
 				new ResponseBuilder<>().fail("405").error(new ResponseError("405",
