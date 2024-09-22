@@ -17,7 +17,7 @@ on:
       - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     environment: test
 
@@ -31,9 +31,7 @@ jobs:
       postgres:
           # Docker Hub image
           image: postgres
-          # Provide the password for postgres
-          env:
-            POSTGRES_PASSWORD: ${{test.DATABASE_PASSWORD}}
+          
           # Set health checks to wait until postgres has started
           options: >-
             --health-cmd pg_isready
@@ -70,6 +68,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Generate Coverage Badge
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          jacoco-csv-file: target/site/jacoco/jacoco.csv
+  build:
+    runs-on: ubuntu-latest
+    environment: test
+
+    steps:
+    
       # Build Docker images using Docker Compose
       - name: Build and run Docker Compose
         run: docker compose -f docker-compose.yaml up --build -d
@@ -78,7 +86,4 @@ jobs:
       - name: Shut down Docker Compose
         run: docker-compose down
 
-      - name: Generate Coverage Badge
-        uses: cicirello/jacoco-badge-generator@v2
-        with:
-          jacoco-csv-file: target/site/jacoco/jacoco.csv
+      
