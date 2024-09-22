@@ -7,7 +7,7 @@ import org.springframework.modulith.docs.Documenter;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-@SpringBootTest
+@SpringBootTest(classes = SpringBootModulithExampleApplicationTests.class)
 @ActiveProfiles("test")
 class SpringBootModulithExampleApplicationTests {
 	
