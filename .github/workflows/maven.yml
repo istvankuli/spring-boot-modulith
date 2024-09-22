@@ -89,7 +89,7 @@ jobs:
 
       # Build the project with Maven
       - name: Test with Maven
-        run: mvn -Dmaven.test.skip=true clean build
+        run: mvn -Dmaven.test.skip=true clean install
             
       # Set up Docker Buildx for Docker Compose
       - name: Set up Docker Buildx
