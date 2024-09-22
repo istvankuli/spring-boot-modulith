@@ -22,12 +22,6 @@ jobs:
     environment: test
 
     services:
-      docker:
-        image: docker:20.10.7
-        options: --privileged
-        ports:
-          - 5432:5432
-          - 8080:8080
       postgres:
           # Docker Hub image
           image: postgres
@@ -73,9 +67,18 @@ jobs:
         with:
           jacoco-csv-file: target/site/jacoco/jacoco.csv
   build:
+  
     runs-on: ubuntu-latest
     environment: test
 
+
+    services:
+      docker:
+          image: docker:20.10.7
+          options: --privileged
+          ports:
+            - 5432:5432
+            - 8080:8080
     steps:
     
       # Build Docker images using Docker Compose
