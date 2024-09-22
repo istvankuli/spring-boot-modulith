@@ -44,8 +44,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Build the project with Maven
-      - name: Build with Maven
+      # Test the project with Maven
+      - name: Test with Maven
         run: mvn clean test
 
 
@@ -86,6 +86,10 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+
+      # Build the project with Maven
+      - name: Test with Maven
+        run: mvn -Dmaven.test.skip=true clean build
             
       # Set up Docker Buildx for Docker Compose
       - name: Set up Docker Buildx
