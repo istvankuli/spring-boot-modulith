@@ -1,0 +1,93 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: test
+
+    services:
+      postgres:
+          # Docker Hub image
+          image: postgres
+          env:
+            "POSTGRES_HOST_AUTH_METHOD": trust
+          # Set health checks to wait until postgres has started
+          options: >-
+            --health-cmd pg_isready
+            --health-interval 10s
+            --health-timeout 5s
+            --health-retries 5
+
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up JDK 17 for Maven build
+      - name: Set up JDK 22
+        uses: actions/setup-java@v3
+        with:
+          java-version: '22'
+          distribution: 'adopt'
+
+      # Cache Maven dependencies
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Build the project with Maven
+      - name: Build with Maven
+        run: mvn clean package
+
+      # Set up Docker Buildx for Docker Compose
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Generate Coverage Badge
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          jacoco-csv-file: target/site/jacoco/jacoco.csv
+  build:
+  
+    runs-on: ubuntu-latest
+    environment: test
+
+
+    services:
+      docker:
+          image: docker:20.10.7
+          options: --privileged
+          ports:
+            - 5432:5432
+            - 8080:8080
+    steps:
+    
+      # Build Docker images using Docker Compose
+      - name: Build and run Docker Compose
+        run: docker compose -f docker-compose.yaml up --build -d
+
+      # Shut down the services after tests
+      - name: Shut down Docker Compose
+        run: docker-compose down
+
+      
