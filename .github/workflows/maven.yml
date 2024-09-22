@@ -21,18 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
 
-    services:
-      postgres:
-          # Docker Hub image
-          image: postgres
-          env:
-            "POSTGRES_HOST_AUTH_METHOD": trust
-          # Set health checks to wait until postgres has started
-          options: >-
-            --health-cmd pg_isready
-            --health-interval 10s
-            --health-timeout 5s
-            --health-retries 5
+    
 
     steps:
       # Checkout the code from the repository
@@ -57,18 +46,15 @@ jobs:
 
       # Build the project with Maven
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn clean test
 
-      # Set up Docker Buildx for Docker Compose
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
 
       - name: Generate Coverage Badge
         uses: cicirello/jacoco-badge-generator@v2
         with:
           jacoco-csv-file: target/site/jacoco/jacoco.csv
   build:
-  
+    needs: test
     runs-on: ubuntu-latest
     environment: test
 
@@ -82,6 +68,10 @@ jobs:
             - 8080:8080
     steps:
     
+      # Set up Docker Buildx for Docker Compose
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        
       # Build Docker images using Docker Compose
       - name: Build and run Docker Compose
         run: docker compose -f docker-compose.yaml up --build -d
